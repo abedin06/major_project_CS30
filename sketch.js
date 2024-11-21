@@ -7,10 +7,14 @@
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  angleMode(DEGREES);
 }
 
 function draw() {
   background(220);
-  circle(mouseX,mouseY,50);
+  fill("red");
+  orbitControl();
+  translate(random(width),random(height),0);
+  box();
 }
