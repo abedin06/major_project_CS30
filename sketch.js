@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 let x = 200;
+let y = 50;
 
 
 function setup() {
@@ -15,12 +16,17 @@ function setup() {
 
 function draw() {
   background(220);
-  fill("red");
   orbitControl();
   box();
-  rect(x,50,50,50);
+  rect(x,y,50,50);
 
   if(keyIsDown(65)){
     x-=5;
+  }
+  if(keyIsDown(87)){
+    y-=5;
+  }
+  if(keyIsDown(83)){
+    y+=5;
   }
 }
