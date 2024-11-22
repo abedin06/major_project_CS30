@@ -1,13 +1,17 @@
 # Project Description
 
-Explain what you are going to build here.
+I am trying to build a Physics game based on steering and launching satellites. The player has
+to use his Physics knowledge to steer the satellite or chart a course in order to accomplish a given mission.
 
 # Needs to have
 
-- thing one
-- thing two
+- Create a spaceship or satellite with vector positions
+- Make the satellite move and accelerate on command.
+- Add realistic gravity, air resistance or any other forces.
+- Make planets and outerspace environment.
+- Add collisions and explosions
 
 # Nice to have List
 
-- one thing
-- yet another thing
+- Having 3D planets and 3D spaceships/satellites
+- Making the objects move in 3D
