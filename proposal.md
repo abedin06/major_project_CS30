@@ -10,6 +10,8 @@ to use his Physics knowledge to steer the satellite or chart a course in order t
 - Add realistic gravity, air resistance or any other forces.
 - Make planets and outerspace environment.
 - Add collisions and explosions
+- Limited fuel or ratings based on fuel efficiency
+- Sound effects and a start screen.
 
 # Nice to have List
 
