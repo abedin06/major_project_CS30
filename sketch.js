@@ -12,29 +12,47 @@ class SpaceShip{
     this.vely = createVector(0,5);
     this.length = 50;
     this.width = 25;
+    this.mass = 100;
   }
 
   display(){
-    fill("blue");
-    rect(this.x, this.y, this.length, this.width);
+    rect(this.pos.x, this.pos.y, this.length, this.width);
   }
 
   move(){
-    if (keyCode === UP_ARROW){
-      this.pos.sub(vely);
+    if (keyIsDown(38)){
+      this.pos.sub(this.vely);
     }
 
-    if (keyCode === DOWN_ARROW){
-      this.pos.add(vely);
+    if (keyIsDown(40)){
+      this.pos.add(this.vely);
     }
 
-    if(keyCode === LEFT_ARROW){
-      this.pos.sub(velx);
+    if(keyIsDown(37)){
+      this.pos.sub(this.velx);
     }
 
-    if(keyCode === RIGHT_ARROW){
-      this.pos.add(velx);
+    if(keyIsDown(39)){
+      this.pos.add(this.velx);
     }
+  }
+
+}
+
+class Planet{
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.radius = 100;
+    this.mass = 100000;
+  }
+
+  display(){
+    circle(this.x, this.y, this.radius*2);
+  }
+
+  applygravity(someShip){
+    
   }
 
 }
