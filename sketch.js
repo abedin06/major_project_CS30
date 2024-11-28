@@ -8,11 +8,10 @@
 class SpaceShip{
   constructor(x,y){
     this.pos = createVector(x,y);
-    this.velx = createVector(5,0);
-    this.vely = createVector(0,5);
-    this.length = 50;
-    this.width = 25;
-    this.mass = 100;
+    this.velx = createVector(0.0005,0);
+    this.vely = createVector(0,0.0005);
+    this.length = 5;
+    this.width = 2;
   }
 
   display(){
@@ -20,19 +19,19 @@ class SpaceShip{
   }
 
   move(){
-    if (keyIsDown(38)){
+    if (keyCode === 38){
       this.pos.sub(this.vely);
     }
 
-    if (keyIsDown(40)){
+    if (keyCode === 40){
       this.pos.add(this.vely);
     }
 
-    if(keyIsDown(37)){
+    if(keyCode === 37){
       this.pos.sub(this.velx);
     }
 
-    if(keyIsDown(39)){
+    if(keyCode === 39){
       this.pos.add(this.velx);
     }
   }
@@ -40,7 +39,7 @@ class SpaceShip{
 }
 
 class Planet{
-  constructor(x,y){
+  constructor(x, y){
     this.x = x;
     this.y = y;
     this.radius = 100;
@@ -51,24 +50,31 @@ class Planet{
     circle(this.x, this.y, this.radius*2);
   }
 
-  applygravity(someShip){
-    
+  applygravity(someShip, G){
+    let gravity_acc = this.mass*G/ dist(this.x, this.y, someShip.pos.x, someShip.pos.y)**2;
+    let angle = atan((someShip.pos.x-this.x)/(someShip.pos.y-this.y));
+    someShip.velx.add(gravity_acc*cos(angle), 0);
+    someShip.vely.add(0, gravity_acc*sin(angle));
   }
 
 }
 
 let player;
+const G_CONSTANT = 6.6743* 10**-2;
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
-  player = new SpaceShip(0,height/2);
+  player = new SpaceShip(0,0);
+  mars = new Planet(width/2,height/2);
 }
 
 function draw() {
   background(220);
   //orbitControl();
   player.display();
+  mars.display();
   player.move();
+  mars.applygravity(player,G_CONSTANT);
 }
