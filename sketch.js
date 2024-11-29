@@ -19,6 +19,11 @@ class SpaceShip{
   }
 
   move(){
+    this.pos.add(this.velx);
+    this.pos.add(this.vely);
+  }
+
+  update_position(){
     if (keyCode === 38){
       this.pos.sub(this.vely);
     }
@@ -66,7 +71,7 @@ const G_CONSTANT = 6.6743* 10**-2;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
-  player = new SpaceShip(0,0);
+  player = new SpaceShip(0, height);
   mars = new Planet(width/2,height/2);
 }
 
@@ -77,4 +82,7 @@ function draw() {
   mars.display();
   player.move();
   mars.applygravity(player,G_CONSTANT);
+  player.update_position();
 }
+
+
