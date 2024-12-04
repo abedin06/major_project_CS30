@@ -8,10 +8,11 @@
 class SpaceShip{
   constructor(x,y){
     this.pos = createVector(x,y);
-    this.velx = createVector(5,0);
-    this.vely = createVector(0,5);
+    this.velx = createVector(0,0);
+    this.vely = createVector(0,0);
     this.length = 5;
     this.width = 2;
+    this.sped = 5;
   }
 
   display(){
@@ -25,19 +26,19 @@ class SpaceShip{
 
   update_position(){
     if (keyCode === UP_ARROW){
-      this.pos.sub(0,5);
+      this.pos.sub(0,this.sped);
     }
 
     if (keyCode === DOWN_ARROW){
-      this.pos.add(0,5);
+      this.pos.add(0,this.sped);
     }
 
     if(keyCode === LEFT_ARROW){
-      this.pos.sub(5,0);
+      this.pos.sub(this.sped,0);
     }
 
     if(keyCode === RIGHT_ARROW){
-      this.pos.add(5,0);
+      this.pos.add(this.sped,0);
     }
   }
 
@@ -56,27 +57,27 @@ class Planet{
   }
 
   applygravity(someShip, G){
-    let gravity_acc = this.mass*G/ dist(this.x, this.y, someShip.pos.x, someShip.pos.y)**2;
-    let angle = atan((someShip.pos.x-this.x)/(someShip.pos.y-this.y));
+    let gravity_acc = this.mass*G/dist(this.x, this.y, someShip.pos.x, someShip.pos.y)**2;
+    let angle = atan(Math.abs(someShip.pos.y-this.y)/Math.abs(someShip.pos.x-this.x));
 
     if(someShip.pos.x < this.x && someShip.pos.y < this.y){
       someShip.velx.add(gravity_acc*cos(angle), 0);
-      someShip.vely.sub(0, gravity_acc*sin(angle));
+      someShip.vely.add(0, gravity_acc*sin(angle));
     }
 
     if(someShip.pos.x < this.x && someShip.pos.y > this.y){
       someShip.velx.add(gravity_acc*cos(angle), 0);
-      someShip.vely.add(0, gravity_acc*sin(angle));
+      someShip.vely.sub(0, gravity_acc*sin(angle));
     }
 
     if(someShip.pos.x > this.x && someShip.pos.y > this.y){
       someShip.velx.sub(gravity_acc*cos(angle), 0);
-      someShip.vely.add(0, gravity_acc*sin(angle));
+      someShip.vely.sub(0, gravity_acc*sin(angle));
     }
 
     if(someShip.pos.x > this.x && someShip.pos.y < this.y){
       someShip.velx.sub(gravity_acc*cos(angle), 0);
-      someShip.vely.sub(0, gravity_acc*sin(angle));
+      someShip.vely.add(0, gravity_acc*sin(angle));
     }
 
   }
@@ -90,14 +91,17 @@ const G_CONSTANT = 6.6743*10**-2;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
-  player = new SpaceShip(50, 100);
-  mars = new Planet(width/2,height/2);
+  player = new SpaceShip(width/2, 100);
+  mars = new Planet(width/4,height/2);
+  venus = new Planet(0.75*width, height/2);
 }
 
 function draw() {
   background(220);
   //orbitControl();
   mars.display();
+  venus.display();
+  venus.applygravity(player, G_CONSTANT);
   mars.applygravity(player,G_CONSTANT);
   player.update_position();
   player.move();
