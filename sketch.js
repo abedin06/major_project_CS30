@@ -42,6 +42,13 @@ class SpaceShip{
     }
   }
 
+  smashed(){
+    if (crashed){
+      this.pos = (x,y);
+      crashed = false;
+    }
+  }
+
 }
 
 class Planet{
@@ -82,9 +89,18 @@ class Planet{
 
   }
 
+  collision(someShip){
+    if(someShip.pos.x > this.x-this.radius && someShip.pos.x < this.x+this.radius &&
+       someShip.pos.y > this.y - this.radius && someShip.pos.y < this.y+this.radius){
+      alert("You suck, get better");
+      crashed = true;
+    }
+  }
+
 }
 
 let player;
+let crashed = false;
 const G_CONSTANT = 6.6743*10**-2;
 
 
@@ -96,6 +112,8 @@ function setup() {
   venus = new Planet(0.75*width, height/2);
 }
 
+
+
 function draw() {
   background(220);
   //orbitControl();
@@ -103,6 +121,9 @@ function draw() {
   venus.display();
   venus.applygravity(player, G_CONSTANT);
   mars.applygravity(player,G_CONSTANT);
+  venus.collision(player);
+  mars.collision(player);
+  player.smashed();
   player.update_position();
   player.move();
   player.display();
