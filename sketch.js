@@ -28,28 +28,27 @@ class SpaceShip{
     if (keyCode === UP_ARROW){
       this.pos.sub(0,this.sped);
     }
-
+  
     if (keyCode === DOWN_ARROW){
       this.pos.add(0,this.sped);
     }
-
+  
     if(keyCode === LEFT_ARROW){
       this.pos.sub(this.sped,0);
     }
-
+  
     if(keyCode === RIGHT_ARROW){
       this.pos.add(this.sped,0);
     }
   }
 
-  smashed(){
-    if (crashed){
-      this.pos = (x,y);
-      crashed = false;
-    }
+  refresh(initial_x,initial_y){
+    this.pos.x = initial_x;
+    this.pos.y = initial_y;
   }
-
 }
+
+
 
 class Planet{
   constructor(x, y){
@@ -92,7 +91,6 @@ class Planet{
   collision(someShip){
     if(someShip.pos.x > this.x-this.radius && someShip.pos.x < this.x+this.radius &&
        someShip.pos.y > this.y - this.radius && someShip.pos.y < this.y+this.radius){
-      alert("You suck, get better");
       crashed = true;
     }
   }
@@ -123,10 +121,19 @@ function draw() {
   mars.applygravity(player,G_CONSTANT);
   venus.collision(player);
   mars.collision(player);
-  player.smashed();
+  player.display();
   player.update_position();
   player.move();
-  player.display();
+  return_player();
+}
+
+function return_player(){
+  if(crashed){
+    player.refresh(width/2,100);
+    player.velx = (0,0);
+    player.vely = (0,0);
+    crashed = false;
+  }
 }
 
 
