@@ -22,6 +22,22 @@ class SpaceShip{
   move(){
     this.pos.add(this.velx);
     this.pos.add(this.vely);
+
+    if(this.pos.x > width){
+      this.pos.x = 0;
+    }
+
+    if(this.pos.x < 0){
+      this.pos.x = width-this.width;
+    }
+
+    if(this.pos.y > height){
+      this.pos.y = 0;
+    }
+
+    if(this.pos.y < 0){
+      this.pos.y = height;
+    }
   }
 
   update_position(){
@@ -119,7 +135,7 @@ class Space_Station{
 }
 
 let crashed = false;
-let level = 3;
+let level = 1;
 let landed = "has not docked";
 let number_of_crashes = 0;
 const G_CONSTANT = 6.6743*10**-2;
@@ -143,6 +159,7 @@ function draw() {
   background(220);
   game_level();
   return_player();
+  change_levels();
   show_scores();
 }
 
@@ -208,10 +225,10 @@ function game_level(){
 
   if(level === 3){
 
-    mars.x = 200;
+    mars.x = 300;
     mars.y = 300;
 
-    venus.x = width-200;
+    venus.x = width-300;
     venus.y = 300;
 
     earth.x = width/2;
@@ -248,4 +265,18 @@ function game_level(){
 
   }
 }
+
+function change_levels(){
+  if (level === 1 && landed === "has docked"){
+    level++;
+    landed = "has not docked";
+  }
+
+  if(level === 2 && landed === "has docked"){
+    level++;
+    landed = "has not docked";
+  }
+}
+
+
 
