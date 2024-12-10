@@ -134,11 +134,38 @@ class Space_Station{
   }
 }
 
+class Earthship{
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.length = 10;
+    this.width = 5;
+    this.thrust = 3;
+    this.mass = 10000;
+    this.deltatime = 0.01;
+    this.mass_change = 0.1;
+    this.vely_prev = 0;
+    this.vely_new = 0;
+  }
+
+  move(){
+    this.vely_new = (this.thrust- this.mass*G_CONSTANT - DRAG_CONSTANT*this.vely_prev*this.vely_prev - 
+      this.vely_prev*this.mass_change)/this.mass *this.deltatime + this.vely_prev;
+    this.y += this.vely_new;
+    this.vely_prev = this.vely_new;
+  }
+
+  display(){
+    rect(this.x, this.y, this.width, this.length);
+  }
+}
+
 let crashed = false;
-let level = 1;
+let level = 4;
 let landed = "has not docked";
 let number_of_crashes = 0;
 const G_CONSTANT = 6.6743*10**-2;
+const DRAG_CONSTANT = 0.35;
 
 
 function setup() {
@@ -151,6 +178,8 @@ function setup() {
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
+
+  falcon = new Earthship(width/2, height-200);
 }
 
 
@@ -263,6 +292,11 @@ function game_level(){
     player.update_position();
     player.move();
 
+  }
+
+  if (level === 4){
+    falcon.display();
+    falcon.move();
   }
 }
 
