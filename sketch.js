@@ -140,10 +140,10 @@ class Earthship{
     this.y = y;
     this.length = 10;
     this.width = 5;
-    this.thrust = 3;
-    this.mass = 10000;
-    this.deltatime = 0.01;
-    this.mass_change = 0.1;
+    this.thrust = 300;
+    this.mass = 1*10**5;
+    this.deltatime = 1;
+    this.mass_change = 0.01;
     this.vely_prev = 0;
     this.vely_new = 0;
   }
@@ -151,12 +151,24 @@ class Earthship{
   move(){
     this.vely_new = (this.thrust- this.mass*G_CONSTANT - DRAG_CONSTANT*this.vely_prev*this.vely_prev - 
       this.vely_prev*this.mass_change)/this.mass *this.deltatime + this.vely_prev;
+
     this.y += this.vely_new;
     this.vely_prev = this.vely_new;
+    this.mass -= this.mass_change;
+
+    if(this.y < 0){
+      this.y = height;
+    }
+
+    if(this.mass <= 0){
+      alert("rocket fuel is over");
+    }
   }
 
   display(){
     rect(this.x, this.y, this.width, this.length);
+    textSize(25);
+    text(this.vely_new, 100, 100);
   }
 }
 
@@ -295,8 +307,11 @@ function game_level(){
   }
 
   if (level === 4){
+    
+    //translate(width/2 - falcon.x, height/2 - falcon.y);
     falcon.display();
     falcon.move();
+    
   }
 }
 
