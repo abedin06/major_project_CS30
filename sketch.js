@@ -373,6 +373,16 @@ function change_levels(){
     level++;
     landed = "has not docked";
   }
+
+  if(level === 3 && landed === "has docked"){
+    level++;
+    landed = "has not docked";
+  }
+
+  if(level === 4 && landed === "has docked"){
+    level++;
+    landed = "has not docked";
+  }
 }
 
 
