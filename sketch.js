@@ -173,7 +173,7 @@ class Earthship{
 }
 
 let crashed = false;
-let level = 4;
+let level = 2;
 let landed = "has not docked";
 let number_of_crashes = 0;
 const G_CONSTANT = 6.6743*10**-2;
@@ -187,6 +187,7 @@ function setup() {
   mars = new Planet(0,0);
   venus = new Planet(0,0);
   earth = new Planet(0,0);
+  mercury = new Planet(0,0);
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
@@ -220,7 +221,7 @@ function show_scores(){
 
 
 function game_level(){
-  if(level === 1){
+  if(level === 2){
     mars.x = width/2;
     mars.y = height/2;
     mars.display();
@@ -237,7 +238,7 @@ function game_level(){
     player.move();
   }
 
-  if(level === 2){
+  if(level === 3){
     mars.x = width/4;
     mars.y = height/2;
 
@@ -264,7 +265,7 @@ function game_level(){
     player.move();
   }
 
-  if(level === 3){
+  if(level === 4){
 
     mars.x = 300;
     mars.y = 300;
@@ -281,7 +282,6 @@ function game_level(){
     stellar_2.pos.x = width-300;
     stellar_2.pos.y = height-100;
   
-
     mars.display();
     mars.applygravity(player, G_CONSTANT);
     mars.collision(player);
@@ -306,12 +306,60 @@ function game_level(){
 
   }
 
-  if (level === 4){
+  if (level === 1){
     
     //translate(width/2 - falcon.x, height/2 - falcon.y);
     falcon.display();
     falcon.move();
     
+  }
+
+  if(level === 5){
+    mars.x = 300;
+    mars.y = 350;
+
+    venus.x = width-300;
+    venus.y = 350;
+
+    earth.x = width/2;
+    earth.y = height-150;
+
+    mercury.x = width/2;
+    mercury.y = height/2-100;
+
+    stellar.pos.x = 250;
+    stellar.pos.y = height-100;
+
+    stellar_2.pos.x = width-300;
+    stellar_2.pos.y = height-100;
+  
+
+    mars.display();
+    mars.applygravity(player, G_CONSTANT);
+    mars.collision(player);
+
+    venus.display();
+    venus.applygravity(player, G_CONSTANT);
+    venus.collision(player);
+
+    earth.display();
+    earth.applygravity(player, G_CONSTANT);
+    earth.collision(player);
+
+    mercury.display();
+    mercury.applygravity(player, G_CONSTANT);
+    mercury.collision(player);
+
+    stellar.display();
+    stellar.hasLanded(player);
+
+    stellar_2.display();
+    stellar_2.hasLanded(player);
+
+    player.display();
+    player.update_position();
+    player.move();
+
   }
 }
 
