@@ -11,11 +11,13 @@ class SpaceShip{
     this.velx = createVector(0,0);
     this.vely = createVector(0,0);
     this.length = 5;
-    this.width = 2;
+    this.width = 3;
     this.speed = 5;
   }
 
   display(){
+    noStroke();
+    fill("white");
     rect(this.pos.x, this.pos.y, this.length, this.width);
   }
 
@@ -69,14 +71,15 @@ class SpaceShip{
 
 
 class Planet{
-  constructor(x, y){
+  constructor(x, y, radius){
     this.x = x;
     this.y = y;
-    this.radius = 100;
+    this.radius = radius;
     this.mass = 100000;
   }
 
   display(){
+    fill("white");
     circle(this.x, this.y, this.radius*2);
   }
 
@@ -122,6 +125,7 @@ class Space_Station{
   }
 
   display(){
+    fill("white");
     square(this.pos.x, this.pos.y, this.size);
   }
 
@@ -172,6 +176,14 @@ class Earthship{
   }
 }
 
+class Asteroid{
+  constructor(){
+    this.x = random(0, width);
+    this.y = random (0,height);
+    
+  }
+}
+
 let crashed = false;
 let level = 2;
 let landed = "has not docked";
@@ -184,10 +196,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   player = new SpaceShip(width/2,150);
-  mars = new Planet(0,0);
-  venus = new Planet(0,0);
-  earth = new Planet(0,0);
-  mercury = new Planet(0,0);
+  mars = new Planet(0,0, 100);
+  venus = new Planet(0,0, 100);
+  earth = new Planet(0,0, 100);
+  mercury = new Planet(0,0, 50);
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
@@ -198,7 +210,7 @@ function setup() {
 
 
 function draw() {
-  background(220);
+  background(0);
   game_level();
   return_player();
   change_levels();
@@ -327,11 +339,11 @@ function game_level(){
     mercury.x = width/2;
     mercury.y = height/2-100;
 
-    stellar.pos.x = 250;
+    stellar.pos.x = 50;
     stellar.pos.y = height-100;
 
-    stellar_2.pos.x = width-300;
-    stellar_2.pos.y = height-100;
+    stellar_2.pos.x = width-50;
+    stellar_2.pos.y = 50;
   
 
     mars.display();
