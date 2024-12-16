@@ -199,7 +199,12 @@ function setup() {
   mars = new Planet(0,0, 100);
   venus = new Planet(0,0, 100);
   earth = new Planet(0,0, 100);
-  mercury = new Planet(0,0, 50);
+  mercury = new Planet(0,0, 75);
+  p_1 = new Planet(0,0,75);
+  p_2 = new Planet(0,0,75);
+  p_3 = new Planet(0,0,75);
+  bp = new Planet(0,0,150);
+
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
@@ -373,6 +378,55 @@ function game_level(){
     player.move();
 
   }
+
+  if(level === 6){
+
+    player.display();
+    player.update_position();
+    player.move();
+
+    bp.x = width/2;
+    bp.y = height/2;
+    bp.display();
+    bp.applygravity(player, G_CONSTANT);
+    bp.collision(player);
+
+    mercury.x = 300;
+    mercury.y = 200;
+    mercury.display();
+    mercury.applygravity(player, G_CONSTANT);
+    mercury.collision(player);
+
+    p_1.x = 300;
+    p_1.y = 600;
+    p_1.display();
+    p_1.applygravity(player, G_CONSTANT);
+    p_1.collision(player);
+
+    p_2.x = width-300;
+    p_2.y = 200;
+    p_2.display();
+    p_2.applygravity(player, G_CONSTANT);
+    p_2.collision(player);
+
+    p_3.x = width-300;
+    p_3.y = 600;
+    p_3.display();
+    p_3.applygravity(player, G_CONSTANT);
+    p_3.collision(player);
+
+    stellar.pos.x = 100;
+    stellar.pos.y = 400;
+
+    stellar_2.pos.x = width-100;
+    stellar_2.pos.y = 400;
+
+    stellar.display();
+    stellar.hasLanded(player);
+
+    stellar_2.display();
+    stellar_2.hasLanded(player);
+  }
 }
 
 function change_levels(){
@@ -392,6 +446,11 @@ function change_levels(){
   }
 
   if(level === 4 && landed === "has docked"){
+    level++;
+    landed = "has not docked";
+  }
+
+  if(level === 5 && landed === "has docked"){
     level++;
     landed = "has not docked";
   }
