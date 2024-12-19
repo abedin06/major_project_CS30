@@ -178,10 +178,27 @@ class Earthship{
 
 class Asteroid{
   constructor(){
-    this.x = random(0, width);
-    this.y = random (0,height);
-    
+    this.x = random(0,width);
+    this.y = -10;
+    this.radius = 5;
+    this.dx = 5;
+    this.dy = 5;
   }
+
+  display(){
+    fill("red");
+    circle(this.x, this.y, this.radius*2);
+  }
+
+  move(){
+    this.x += this.dx;
+    this.y += this.dy;
+  }
+
+  isDead(){
+    return this.y > windowHeight;
+  }
+
 }
 
 let crashed = false;
@@ -190,6 +207,10 @@ let landed = "has not docked";
 let number_of_crashes = 0;
 const G_CONSTANT = 6.6743*10**-2;
 const DRAG_CONSTANT = 0.35;
+let asteroidList = [];
+let lastswitch = 0;
+let interval = 5000;
+
 
 
 function setup() {
@@ -220,6 +241,19 @@ function draw() {
   return_player();
   change_levels();
   show_scores();
+
+  for (let rock of asteroidList){
+    if(rock.isDead()){
+      let index = asteroidList.indexOf(rock);
+      asteroidList.splice(index, 1);
+    }
+
+    else{
+      rock.display();
+      rock.move();
+    }
+  }
+
 }
 
 function return_player(){
@@ -227,6 +261,16 @@ function return_player(){
     player.refresh(width/2,50);
     crashed = false;
     number_of_crashes++;
+  }
+}
+
+function makeAsteroids(){
+  if(millis() > lastswitch + interval){
+    for (let i = 0; i < 10 ; i++){
+      let someparticle = new Asteroid();
+      asteroidList.push(someparticle);
+    }
+    lastswitch = millis();
   }
 }
 
