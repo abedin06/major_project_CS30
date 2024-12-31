@@ -211,21 +211,42 @@ let asteroidList = [];
 let lastswitch = 0;
 let interval = 5000;
 
+let planet_x_list;
+let planet_y_list;
+let planet_radius_list;
+
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
-  player = new SpaceShip(width/2,150);
-  mars = new Planet(0,0, 100);
-  venus = new Planet(0,0, 100);
-  earth = new Planet(0,0, 100);
-  mercury = new Planet(0,0, 75);
-  p_1 = new Planet(0,0,75);
-  p_2 = new Planet(0,0,75);
-  p_3 = new Planet(0,0,75);
-  bp = new Planet(0,0,150);
 
+  planet_x_list = [
+    [width/2],
+    [width/4 , 0.75*width],
+    [300, width-300, width/2],
+    [300, width-300, width/2, width/2],
+    [width/2, 300, 300, width-300, width-300]
+  ];
+  
+  planet_y_list = [
+    [height/2],
+    [height/2, height/2],
+    [300, 300, height-150],
+    [350, 350, height-150, height/2 -150],
+    [height/2, 200, 600, 200, 600]
+  ];
+  
+  planet_radius_list = [
+    [100],
+    [100, 100],
+    [100, 100, 100],
+    [100, 100, 100, 75],
+    [150, 75, 75, 75, 75]
+  ];
+
+
+  player = new SpaceShip(width/2,150);
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
@@ -283,11 +304,19 @@ function show_scores(){
 
 function game_level(){
   if(level === 2){
-    mars.x = width/2;
-    mars.y = height/2;
-    mars.display();
-    mars.applygravity(player, G_CONSTANT);
-    mars.collision(player);
+    let planet_list = [];
+
+    for (let i = 0; i < planet_y_list[0].length; i++){
+      let object = new Planet(planet_x_list[0][i], planet_y_list[0][i], planet_radius_list[0][i]);
+      planet_list.push(object);
+      i++;
+    }
+
+    for (let somePlanet of planet_list){
+      somePlanet.display();
+      somePlanet.applygravity(player, G_CONSTANT);
+      somePlanet.collision(player);
+    }
 
     stellar.pos.x = width/2 + 400;
     stellar.pos.y = height/2;
@@ -300,23 +329,23 @@ function game_level(){
   }
 
   if(level === 3){
-    mars.x = width/4;
-    mars.y = height/2;
+    let planet_list = [];
 
-    venus.x = 0.75*width;
-    venus.y = height/2;
+    for (let i = 0; i < planet_y_list[1].length; i++){
+      let object = new Planet(planet_x_list[1][i], planet_y_list[1][i], planet_radius_list[1][i]);
+      planet_list.push(object);
+      i++;
+    }
+
+    for (let somePlanet of planet_list){
+      somePlanet.display();
+      somePlanet.applygravity(player, G_CONSTANT);
+      somePlanet.collision(player);
+    }
+    
 
     stellar.pos.x = 0.75*width+200;
     stellar.pos.y = height/2;
-
-    mars.display();
-    venus.display();
-  
-    venus.applygravity(player, G_CONSTANT);
-    mars.applygravity(player,G_CONSTANT);
-  
-    venus.collision(player);
-    mars.collision(player);
   
     stellar.display();
     stellar.hasLanded(player);
@@ -328,32 +357,25 @@ function game_level(){
 
   if(level === 4){
 
-    mars.x = 300;
-    mars.y = 300;
+    let planet_list = [];
 
-    venus.x = width-300;
-    venus.y = 300;
+    for (let i = 0; i < planet_x_list[2].length; i++){
+      let object = new Planet(planet_x_list[2][i], planet_y_list[2][i], planet_radius_list[2][i]);
+      planet_list.push(object);
+      i++;
+    }
 
-    earth.x = width/2;
-    earth.y = height-150;
+    for (let somePlanet of planet_list){
+      somePlanet.display();
+      somePlanet.applygravity(player, G_CONSTANT);
+      somePlanet.collision(player);
+    }
 
     stellar.pos.x = 250;
     stellar.pos.y = height-100;
 
     stellar_2.pos.x = width-300;
     stellar_2.pos.y = height-100;
-  
-    mars.display();
-    mars.applygravity(player, G_CONSTANT);
-    mars.collision(player);
-
-    venus.display();
-    venus.applygravity(player, G_CONSTANT);
-    venus.collision(player);
-
-    earth.display();
-    earth.applygravity(player, G_CONSTANT);
-    earth.collision(player);
 
     stellar.display();
     stellar.hasLanded(player);
@@ -376,40 +398,26 @@ function game_level(){
   }
 
   if(level === 5){
-    mars.x = 300;
-    mars.y = 350;
 
-    venus.x = width-300;
-    venus.y = 350;
+    let planet_list = [];
 
-    earth.x = width/2;
-    earth.y = height-150;
+    for (let i = 0; i < planet_x_list[3].length; i++){
+      let object = new Planet(planet_x_list[3][i], planet_y_list[3][i], planet_radius_list[3][i]);
+      planet_list.push(object);
+      i++;
+    }
 
-    mercury.x = width/2;
-    mercury.y = height/2-100;
+    for (let somePlanet of planet_list){
+      somePlanet.display();
+      somePlanet.applygravity(player, G_CONSTANT);
+      somePlanet.collision(player);
+    }
 
     stellar.pos.x = 50;
     stellar.pos.y = height-100;
 
     stellar_2.pos.x = width-50;
     stellar_2.pos.y = 50;
-  
-
-    mars.display();
-    mars.applygravity(player, G_CONSTANT);
-    mars.collision(player);
-
-    venus.display();
-    venus.applygravity(player, G_CONSTANT);
-    venus.collision(player);
-
-    earth.display();
-    earth.applygravity(player, G_CONSTANT);
-    earth.collision(player);
-
-    mercury.display();
-    mercury.applygravity(player, G_CONSTANT);
-    mercury.collision(player);
 
     stellar.display();
     stellar.hasLanded(player);
@@ -425,39 +433,23 @@ function game_level(){
 
   if(level === 6){
 
+    let planet_list = [];
+
+    for (let i = 0; i < planet_x_list[4].length; i++){
+      let object = new Planet(planet_x_list[4][i], planet_y_list[4][i], planet_radius_list[4][i]);
+      planet_list.push(object);
+      i++;
+    }
+
+    for (let somePlanet of planet_list){
+      somePlanet.display();
+      somePlanet.applygravity(player, G_CONSTANT);
+      somePlanet.collision(player);
+    }
+
     player.display();
     player.update_position();
     player.move();
-
-    bp.x = width/2;
-    bp.y = height/2;
-    bp.display();
-    bp.applygravity(player, G_CONSTANT);
-    bp.collision(player);
-
-    mercury.x = 300;
-    mercury.y = 200;
-    mercury.display();
-    mercury.applygravity(player, G_CONSTANT);
-    mercury.collision(player);
-
-    p_1.x = 300;
-    p_1.y = 600;
-    p_1.display();
-    p_1.applygravity(player, G_CONSTANT);
-    p_1.collision(player);
-
-    p_2.x = width-300;
-    p_2.y = 200;
-    p_2.display();
-    p_2.applygravity(player, G_CONSTANT);
-    p_2.collision(player);
-
-    p_3.x = width-300;
-    p_3.y = 600;
-    p_3.display();
-    p_3.applygravity(player, G_CONSTANT);
-    p_3.collision(player);
 
     stellar.pos.x = 100;
     stellar.pos.y = 400;
