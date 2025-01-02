@@ -179,10 +179,10 @@ class Earthship{
 class Asteroid{
   constructor(){
     this.x = random(0,width);
-    this.y = -10;
+    this.y = random -5;
     this.radius = 5;
-    this.dx = 5;
-    this.dy = 5;
+    this.dx = random(0,5);
+    this.dy = random(0,5);
   }
 
   display(){
@@ -197,6 +197,13 @@ class Asteroid{
 
   isDead(){
     return this.y > windowHeight;
+  }
+
+  made_contact(ship){
+    if(ship.pos.x > this.x-this.radius && ship.pos.x < this.x+this.radius &&
+      ship.pos.y > this.y - this.radius && ship.pos.y < this.y+this.radius){
+      crashed = true;
+    }
   }
 
 }
@@ -263,6 +270,8 @@ function draw() {
   change_levels();
   show_scores();
 
+  makeAsteroids();
+
   for (let rock of asteroidList){
     if(rock.isDead()){
       let index = asteroidList.indexOf(rock);
@@ -272,6 +281,7 @@ function draw() {
     else{
       rock.display();
       rock.move();
+      rock.made_contact(player);
     }
   }
 
@@ -303,13 +313,13 @@ function show_scores(){
 
 
 function game_level(){
+
   if(level === 2){
     let planet_list = [];
 
     for (let i = 0; i < planet_y_list[0].length; i++){
       let object = new Planet(planet_x_list[0][i], planet_y_list[0][i], planet_radius_list[0][i]);
       planet_list.push(object);
-      i++;
     }
 
     for (let somePlanet of planet_list){
@@ -334,7 +344,6 @@ function game_level(){
     for (let i = 0; i < planet_y_list[1].length; i++){
       let object = new Planet(planet_x_list[1][i], planet_y_list[1][i], planet_radius_list[1][i]);
       planet_list.push(object);
-      i++;
     }
 
     for (let somePlanet of planet_list){
@@ -362,7 +371,6 @@ function game_level(){
     for (let i = 0; i < planet_x_list[2].length; i++){
       let object = new Planet(planet_x_list[2][i], planet_y_list[2][i], planet_radius_list[2][i]);
       planet_list.push(object);
-      i++;
     }
 
     for (let somePlanet of planet_list){
@@ -404,7 +412,6 @@ function game_level(){
     for (let i = 0; i < planet_x_list[3].length; i++){
       let object = new Planet(planet_x_list[3][i], planet_y_list[3][i], planet_radius_list[3][i]);
       planet_list.push(object);
-      i++;
     }
 
     for (let somePlanet of planet_list){
@@ -438,7 +445,6 @@ function game_level(){
     for (let i = 0; i < planet_x_list[4].length; i++){
       let object = new Planet(planet_x_list[4][i], planet_y_list[4][i], planet_radius_list[4][i]);
       planet_list.push(object);
-      i++;
     }
 
     for (let somePlanet of planet_list){
