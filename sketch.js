@@ -178,21 +178,20 @@ class Earthship{
 
 class Asteroid{
   constructor(){
-    this.x = random(0,width);
-    this.y = random -5;
+    this.pos = createVector(random(0,width), -5);
     this.radius = 5;
-    this.dx = random(0,5);
-    this.dy = random(0,5);
+    this.velx = createVector(random(0,5), 0);
+    this.vely = createVector(0, random(0,5));
   }
 
   display(){
     fill("red");
-    circle(this.x, this.y, this.radius*2);
+    circle(this.pos.x, this.pos.y, this.radius*2);
   }
 
   move(){
-    this.x += this.dx;
-    this.y += this.dy;
+    this.pos.add(this.velx);
+    this.pos.add(this.vely);
   }
 
   isDead(){
@@ -200,8 +199,8 @@ class Asteroid{
   }
 
   made_contact(ship){
-    if(ship.pos.x > this.x-this.radius && ship.pos.x < this.x+this.radius &&
-      ship.pos.y > this.y - this.radius && ship.pos.y < this.y+this.radius){
+    if(ship.pos.x > this.pos.x-this.radius && ship.pos.x < this.pos.x+this.radius &&
+      ship.pos.y > this.pos.y - this.radius && ship.pos.y < this.pos.y+this.radius){
       crashed = true;
     }
   }
@@ -326,6 +325,10 @@ function game_level(){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
+
+      for (let asteroid of asteroidList){
+        somePlanet.applygravity(asteroid, G_CONSTANT);
+      }
     }
 
     stellar.pos.x = width/2 + 400;
@@ -350,6 +353,10 @@ function game_level(){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
+
+      for (let asteroid of asteroidList){
+        somePlanet.applygravity(asteroid, G_CONSTANT);
+      }
     }
     
 
@@ -377,6 +384,10 @@ function game_level(){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
+
+      for (let asteroid of asteroidList){
+        somePlanet.applygravity(asteroid, G_CONSTANT);
+      }
     }
 
     stellar.pos.x = 250;
@@ -418,6 +429,10 @@ function game_level(){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
+
+      for (let asteroid of asteroidList){
+        somePlanet.applygravity(asteroid, G_CONSTANT);
+      }
     }
 
     stellar.pos.x = 50;
@@ -451,6 +466,10 @@ function game_level(){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
+
+      for (let asteroid of asteroidList){
+        somePlanet.applygravity(asteroid, G_CONSTANT);
+      }
     }
 
     player.display();
