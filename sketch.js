@@ -195,7 +195,18 @@ class Asteroid{
   }
 
   isDead(){
-    return this.y > windowHeight;
+    if (this.y > windowHeight || this.x > windowWidth || this.x < windowWidth){
+      return true;
+    }
+
+    for(let i = 0; i < planet_x_list[level-2].length; i++){
+      if(this.pos.x > planet_x_list[level-2][i] - planet_radius_list[level-2][i] &&
+         this.pos.x < planet_x_list[level-2][i] + planet_radius_list[level-2][i] &&
+         this.pos.y > planet_y_list[level-2][i] - planet_radius_list[level-2][i] &&
+         this.pos.y < planet_y_list[level-2][i] + planet_radius_list[level-2][i]) {
+        return true;
+      }
+    }
   }
 
   made_contact(ship){
