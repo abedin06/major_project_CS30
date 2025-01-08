@@ -71,16 +71,16 @@ class SpaceShip{
 
 
 class Planet{
-  constructor(x, y, radius){
+  constructor(x, y, radius, someImage){
     this.x = x;
     this.y = y;
+    this.image = someImage;
     this.radius = radius;
     this.mass = 100000;
   }
 
   display(){
-    fill("white");
-    circle(this.x, this.y, this.radius*2);
+    image(this.image, this.x-this.radius, this.y-this.radius, this.radius*2, this.radius*2);
   }
 
   applygravity(someShip, G){
@@ -262,6 +262,15 @@ function setup() {
     [150, 75, 75, 75, 75]
   ];
 
+  planet_image_list = [
+    [EarthImage],
+    [VenusImage, MarsImage],
+    [MercuryImage, MarsImage, VenusImage],
+    [EarthImage, MarsImage, VenusImage, MercuryImage],
+    [UranusImage, MercuryImage, MercuryImage, MercuryImage, MercuryImage]
+
+  ];
+
 
   player = new SpaceShip(width/2,150);
 
@@ -271,7 +280,13 @@ function setup() {
   falcon = new Earthship(width/2, height-200);
 }
 
-
+function preload(){
+  EarthImage = loadImage("Earth.png");
+  MarsImage = loadImage("Mars.webp");
+  VenusImage = loadImage("Venus.jpg");
+  MercuryImage = loadImage("Mercury.webp");
+  UranusImage = loadImage("Uranus.jpg");
+}
 
 function draw() {
   background(0);
@@ -328,7 +343,7 @@ function game_level(){
     let planet_list = [];
 
     for (let i = 0; i < planet_y_list[0].length; i++){
-      let object = new Planet(planet_x_list[0][i], planet_y_list[0][i], planet_radius_list[0][i]);
+      let object = new Planet(planet_x_list[0][i], planet_y_list[0][i], planet_radius_list[0][i], planet_image_list[0][i]);
       planet_list.push(object);
     }
 
@@ -356,7 +371,7 @@ function game_level(){
     let planet_list = [];
 
     for (let i = 0; i < planet_y_list[1].length; i++){
-      let object = new Planet(planet_x_list[1][i], planet_y_list[1][i], planet_radius_list[1][i]);
+      let object = new Planet(planet_x_list[1][i], planet_y_list[1][i], planet_radius_list[1][i], planet_image_list[1][i]);
       planet_list.push(object);
     }
 
@@ -387,7 +402,7 @@ function game_level(){
     let planet_list = [];
 
     for (let i = 0; i < planet_x_list[2].length; i++){
-      let object = new Planet(planet_x_list[2][i], planet_y_list[2][i], planet_radius_list[2][i]);
+      let object = new Planet(planet_x_list[2][i], planet_y_list[2][i], planet_radius_list[2][i], planet_image_list[2][i]);
       planet_list.push(object);
     }
 
@@ -432,7 +447,7 @@ function game_level(){
     let planet_list = [];
 
     for (let i = 0; i < planet_x_list[3].length; i++){
-      let object = new Planet(planet_x_list[3][i], planet_y_list[3][i], planet_radius_list[3][i]);
+      let object = new Planet(planet_x_list[3][i], planet_y_list[3][i], planet_radius_list[3][i], planet_image_list[3][i]);
       planet_list.push(object);
     }
 
@@ -469,7 +484,7 @@ function game_level(){
     let planet_list = [];
 
     for (let i = 0; i < planet_x_list[4].length; i++){
-      let object = new Planet(planet_x_list[4][i], planet_y_list[4][i], planet_radius_list[4][i]);
+      let object = new Planet(planet_x_list[4][i], planet_y_list[4][i], planet_radius_list[4][i], planet_image_list[4][i]);
       planet_list.push(object);
     }
 
