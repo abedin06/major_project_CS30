@@ -10,8 +10,8 @@ class SpaceShip{
     this.pos = createVector(x,y);
     this.velx = createVector(0,0);
     this.vely = createVector(0,0);
-    this.length = 5;
-    this.width = 3;
+    this.length = 7;
+    this.width = 5;
     this.speed = 5;
   }
 
@@ -264,10 +264,10 @@ function setup() {
 
   planet_image_list = [
     [EarthImage],
-    [VenusImage, MarsImage],
-    [MercuryImage, MarsImage, VenusImage],
-    [EarthImage, MarsImage, VenusImage, MercuryImage],
-    [UranusImage, MercuryImage, MercuryImage, MercuryImage, MercuryImage]
+    [SaturnImage, MarsImage],
+    [EarthImage, MarsImage, SaturnImage],
+    [EarthImage, MarsImage, UranusImage, SaturnImage],
+    [UranusImage, MoonImage, MoonImage, MoonImage, MoonImage]
 
   ];
 
@@ -282,10 +282,10 @@ function setup() {
 
 function preload(){
   EarthImage = loadImage("Earth.png");
-  MarsImage = loadImage("Mars.webp");
-  VenusImage = loadImage("Venus.jpg");
-  MercuryImage = loadImage("Mercury.webp");
-  UranusImage = loadImage("Uranus.jpg");
+  MarsImage = loadImage("mars.png");
+  SaturnImage = loadImage("saturn.png");
+  MoonImage = loadImage("moon.png");
+  UranusImage = loadImage("uranus.png");
 }
 
 function draw() {
