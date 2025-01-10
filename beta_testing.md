@@ -1,2 +1,5 @@
  # Normal Person
- - the game was pretty good design-wise but improvement like satelite color changer, level replay option, endgame score tracker, and a good main menu can be made. I feel like having the option to change the mass of the satelite to make the game have various difficulties would add more fun into the game as well.
+ - the game was pretty good design-wise but improvement like satelite color changer,
+  level replay option, endgame score tracker, and a good main menu can be made.
+  I feel like having the option to change the mass of the satelite to make the game have various difficulties
+  would add more fun into the game as well.
