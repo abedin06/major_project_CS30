@@ -17,9 +17,12 @@ class SpaceShip{
 
   display(){
     noStroke();
-    fill("white");
-    rect(this.pos.x, this.pos.y, this.length, this.width);
+    if(!crashed){
+      fill("white");
+      rect(this.pos.x, this.pos.y, this.length, this.width);
+    }
   }
+
 
   move(){
     this.pos.add(this.velx);
@@ -314,9 +317,11 @@ function draw() {
 
 function return_player(){
   if(crashed){
-    player.refresh(width/2,50);
-    crashed = false;
-    number_of_crashes++;
+    if(frameCount%100 === 0){
+      player.refresh(width/2,50);
+      crashed = false;
+      number_of_crashes++;
+    }
   }
 }
 
