@@ -141,43 +141,6 @@ class Space_Station{
   }
 }
 
-class Earthship{
-  constructor(x,y){
-    this.x = x;
-    this.y = y;
-    this.length = 10;
-    this.width = 5;
-    this.thrust = 300;
-    this.mass = 1*10**5;
-    this.deltatime = 1;
-    this.mass_change = 0.01;
-    this.vely_prev = 0;
-    this.vely_new = 0;
-  }
-
-  move(){
-    this.vely_new = (this.thrust- this.mass*G_CONSTANT - DRAG_CONSTANT*this.vely_prev*this.vely_prev - 
-      this.vely_prev*this.mass_change)/this.mass *this.deltatime + this.vely_prev;
-
-    this.y += this.vely_new;
-    this.vely_prev = this.vely_new;
-    this.mass -= this.mass_change;
-
-    if(this.y < 0){
-      this.y = height;
-    }
-
-    if(this.mass <= 0){
-      alert("rocket fuel is over");
-    }
-  }
-
-  display(){
-    rect(this.x, this.y, this.width, this.length);
-    textSize(25);
-    text(this.vely_new, 100, 100);
-  }
-}
 
 class Asteroid{
   constructor(){
@@ -202,11 +165,11 @@ class Asteroid{
       return true;
     }
 
-    for(let i = 0; i < planet_x_list[level-2].length; i++){
-      if(this.pos.x > planet_x_list[level-2][i] - planet_radius_list[level-2][i] &&
-         this.pos.x < planet_x_list[level-2][i] + planet_radius_list[level-2][i] &&
-         this.pos.y > planet_y_list[level-2][i] - planet_radius_list[level-2][i] &&
-         this.pos.y < planet_y_list[level-2][i] + planet_radius_list[level-2][i]) {
+    for(let i = 0; i < planet_x_list[level-1].length; i++){
+      if(this.pos.x > planet_x_list[level-1][i] - planet_radius_list[level-1][i] &&
+         this.pos.x < planet_x_list[level-1][i] + planet_radius_list[level-1][i] &&
+         this.pos.y > planet_y_list[level-1][i] - planet_radius_list[level-1][i] &&
+         this.pos.y < planet_y_list[level-1][i] + planet_radius_list[level-1][i]) {
         return true;
       }
     }
@@ -222,7 +185,7 @@ class Asteroid{
 }
 
 let crashed = false;
-let level = 2;
+let level = 1;
 let landed = "has not docked";
 let number_of_crashes = 0;
 const G_CONSTANT = 6.6743*10**-2;
@@ -279,8 +242,6 @@ function setup() {
 
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
-
-  falcon = new Earthship(width/2, height-200);
 }
 
 function preload(){
@@ -289,6 +250,7 @@ function preload(){
   SaturnImage = loadImage("saturn.png");
   MoonImage = loadImage("moon.png");
   UranusImage = loadImage("uranus.png");
+  PlayerImage = loadImage("Player.png");
 }
 
 function draw() {
@@ -344,7 +306,7 @@ function show_scores(){
 
 function game_level(){
 
-  if(level === 2){
+  if(level === 1){
     let planet_list = [];
 
     for (let i = 0; i < planet_y_list[0].length; i++){
@@ -367,12 +329,13 @@ function game_level(){
     stellar.display();
     stellar.hasLanded(player);
 
+
     player.display();
     player.update_position();
     player.move();
   }
 
-  if(level === 3){
+  if(level === 2){
     let planet_list = [];
 
     for (let i = 0; i < planet_y_list[1].length; i++){
@@ -396,13 +359,13 @@ function game_level(){
   
     stellar.display();
     stellar.hasLanded(player);
-  
+    
     player.display();
     player.update_position();
     player.move();
   }
 
-  if(level === 4){
+  if(level === 3){
 
     let planet_list = [];
 
@@ -439,15 +402,8 @@ function game_level(){
 
   }
 
-  if (level === 1){
-    
-    //translate(width/2 - falcon.x, height/2 - falcon.y);
-    falcon.display();
-    falcon.move();
-    
-  }
 
-  if(level === 5){
+  if(level === 4){
 
     let planet_list = [];
 
@@ -484,7 +440,7 @@ function game_level(){
 
   }
 
-  if(level === 6){
+  if(level === 5){
 
     let planet_list = [];
 
@@ -524,21 +480,25 @@ function game_level(){
 function change_levels(){
   if (level === 1 && landed === "has docked"){
     level++;
+    player.refresh(width/2, 50);
     landed = "has not docked";
   }
 
   if(level === 2 && landed === "has docked"){
     level++;
+    player.refresh(width/2, 50);
     landed = "has not docked";
   }
 
   if(level === 3 && landed === "has docked"){
     level++;
+    player.refresh(width/2, 50);
     landed = "has not docked";
   }
 
   if(level === 4 && landed === "has docked"){
     level++;
+    player.refresh(width/2, 50);
     landed = "has not docked";
   }
 
