@@ -10,16 +10,15 @@ class SpaceShip{
     this.pos = createVector(x,y);
     this.velx = createVector(0,0);
     this.vely = createVector(0,0);
-    this.length = 7;
-    this.width = 5;
+    this.length = 15;
+    this.width = 25;
     this.speed = 5;
   }
 
   display(){
     noStroke();
     if(!crashed){
-      fill("white");
-      rect(this.pos.x, this.pos.y, this.length, this.width);
+      image(PlayerImage, this.pos.x, this.pos.y, this.width, this.length);
     }
   }
 
@@ -124,12 +123,11 @@ class Planet{
 class Space_Station{
   constructor(x,y){
     this.pos = createVector(x,y);
-    this.size = 30;
+    this.size = 45;
   }
 
   display(){
-    fill("white");
-    square(this.pos.x, this.pos.y, this.size);
+    image(StationImage, this.pos.x, this.pos.y, this.size, this.size);
   }
 
   hasLanded(someShip){
@@ -251,10 +249,12 @@ function preload(){
   MoonImage = loadImage("moon.png");
   UranusImage = loadImage("uranus.png");
   PlayerImage = loadImage("Player.png");
+  StationImage = loadImage("Station.png");
+  bg = loadImage("space.gif");
 }
 
 function draw() {
-  background(0);
+  background(bg);
   game_level();
   return_player();
   change_levels();
@@ -298,6 +298,7 @@ function makeAsteroids(){
 }
 
 function show_scores(){
+  fill("white");
   textSize(20);
   text(number_of_crashes, width-100,100);
   text(landed, width-150, 200);
