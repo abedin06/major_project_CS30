@@ -60,6 +60,7 @@ class SpaceShip{
     if(keyCode === RIGHT_ARROW){
       this.pos.add(this.speed,0);
     }
+
   }
 
   refresh(initial_x,initial_y){
@@ -186,7 +187,7 @@ let crashed = false;
 let level = 1;
 let landed = "has not docked";
 let number_of_crashes = 0;
-const G_CONSTANT = 6.6743*10**-2;
+const G_CONSTANT = 8*10**-2;
 const DRAG_CONSTANT = 0.35;
 let asteroidList = [];
 let lastswitch = 0;
@@ -208,7 +209,7 @@ function setup() {
   planet_x_list = [
     [width/2],
     [width/4 , 0.75*width],
-    [300, width-300, width/2],
+    [400, width-400, width/2],
     [300, width-300, width/2, width/2],
     [width/2, 300, 300, width-300, width-300]
   ];
@@ -224,7 +225,7 @@ function setup() {
   planet_radius_list = [
     [100],
     [100, 100],
-    [100, 100, 100],
+    [100, 150, 100],
     [100, 100, 100, 75],
     [150, 75, 75, 75, 75]
   ];
@@ -367,6 +368,22 @@ function endScreen(){
 function keyPressed(){
   if(key === "f"){
     home_screen = false;
+  }
+
+  if(key === UP_ARROW){
+    player.vely.sub(0,1);
+  }
+
+  if(key === DOWN_ARROW){
+    player.vely.add(0,1);
+  }
+
+  if(key === LEFT_ARROW){
+    player.velx.sub(1,0);
+  }
+
+  if(key === RIGHT_ARROW){
+    player.velx.add(1,0);
   }
 }
 
