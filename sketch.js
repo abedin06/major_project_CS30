@@ -196,6 +196,9 @@ let planet_x_list;
 let planet_y_list;
 let planet_radius_list;
 
+let home_screen = true;
+let end_screen = false;
+
 
 
 function setup() {
@@ -254,27 +257,23 @@ function preload(){
 }
 
 function draw() {
-  background(bg);
-  game_level();
-  return_player();
-  change_levels();
-  show_scores();
-
-  makeAsteroids();
-
-  for (let rock of asteroidList){
-    if(rock.isDead()){
-      let index = asteroidList.indexOf(rock);
-      asteroidList.splice(index, 1);
-    }
-
-    else{
-      rock.display();
-      rock.move();
-      rock.made_contact(player);
-    }
+  if(home_screen){
+    homeScreen();
   }
 
+  if(end_screen){
+    endScreen();
+  }
+
+  if(!home_screen && !end_screen){
+    background(bg);
+    game_level();
+    return_player();
+    change_levels();
+    show_scores();
+    makeAsteroids();
+    spawnAsteroids();
+  }
 }
 
 function return_player(){
@@ -287,6 +286,7 @@ function return_player(){
   }
 }
 
+
 function makeAsteroids(){
   if(millis() > lastswitch + interval){
     for (let i = 0; i < 10 ; i++){
@@ -297,11 +297,77 @@ function makeAsteroids(){
   }
 }
 
+function spawnAsteroids(){
+  for (let rock of asteroidList){
+    if(rock.isDead()){
+      let index = asteroidList.indexOf(rock);
+      asteroidList.splice(index, 1);
+    }
+
+    else{
+      rock.display();
+      rock.move();
+      rock.made_contact(player);
+    }
+  }
+}
+
 function show_scores(){
   fill("white");
   textSize(20);
+  text("Deaths:", width-150,100);
   text(number_of_crashes, width-100,100);
   text(landed, width-150, 200);
+}
+
+function homeScreen(){
+  background("black");
+
+  fill("white");
+  textSize(100);
+  textAlign(CENTER, TOP);
+  textFont("Courier New");
+  text("Welcome to Space Odessy", width/2, 100);
+
+  fill("green");
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  textFont("Courier New");
+  text("Use the arrow keys to navigate your spaceship to a docking station", width/2, 300);
+  text("Beware of Gravity. Don't get too close to the planets or the red asteroids", width/2, 400);
+
+  fill("red");
+  text("WARNING! You are bound to die as this game does not acknowledge your right to life", width/2, 500);
+
+  fill("white");
+  text("Press F to start", width/2, 600);
+ 
+}
+
+function endScreen(){
+  background("black");
+
+  fill("green");
+  textSize(100);
+  textAlign(CENTER, TOP);
+  textFont("Courier New");
+  text("You have won!", width/2, 100);
+
+  fill("white");
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  text("Just kidding lol you died", width/2, 300);
+
+  textSize(100);
+  text(number_of_crashes, width/2-175, 450);
+  text("times", width/2+50, 450);
+
+}
+
+function keyPressed(){
+  if(key === "f"){
+    home_screen = false;
+  }
 }
 
 
@@ -504,8 +570,7 @@ function change_levels(){
   }
 
   if(level === 5 && landed === "has docked"){
-    level++;
-    landed = "has not docked";
+    end_screen = true;
   }
 }
 
