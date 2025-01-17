@@ -5,6 +5,104 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+
+let crashed = false;
+let level = 1;
+let landed = "has not docked";
+let number_of_crashes = 0;
+const G_CONSTANT = 8*10**-2;
+const DRAG_CONSTANT = 0.35;
+let asteroidList = [];
+let lastswitch = 0;
+let interval = 5000;
+
+let planet_x_list;
+let planet_y_list;
+let planet_radius_list;
+
+let home_screen = true;
+let end_screen = false;
+
+
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
+
+  planet_x_list = [
+    [width/2],
+    [width/4 , 0.75*width],
+    [400, width-400, width/2],
+    [300, width-300, width/2, width/2],
+    [width/2, 300, 300, width-300, width-300]
+  ];
+  
+  planet_y_list = [
+    [height/2],
+    [height/2, height/2],
+    [300, 300, height-150],
+    [350, 350, height-150, height/2 -150],
+    [height/2, 200, 600, 200, 600]
+  ];
+  
+  planet_radius_list = [
+    [100],
+    [100, 100],
+    [100, 100, 100],
+    [100, 100, 100, 75],
+    [150, 75, 75, 75, 75]
+  ];
+
+  planet_image_list = [
+    [EarthImage],
+    [SaturnImage, MarsImage],
+    [EarthImage, MarsImage, SaturnImage],
+    [EarthImage, MarsImage, UranusImage, SaturnImage],
+    [UranusImage, MoonImage, MoonImage, MoonImage, MoonImage]
+
+  ];
+
+
+  player = new SpaceShip(width/2,150);
+
+  stellar = new Space_Station(0,0);
+  stellar_2 = new Space_Station(0,0);
+}
+
+function preload(){
+  EarthImage = loadImage("Earth.png");
+  MarsImage = loadImage("mars.png");
+  SaturnImage = loadImage("saturn.png");
+  MoonImage = loadImage("moon.png");
+  UranusImage = loadImage("uranus.png");
+  PlayerImage = loadImage("Player.png");
+  StationImage = loadImage("Station.png");
+  bg = loadImage("space.gif");
+  explosion = loadSound("rock_breaking.flac");
+  planetCrash = loadSound("big_explosion.ogg");
+}
+
+function draw() {
+  if(home_screen){
+    homeScreen();
+  }
+
+  if(end_screen){
+    endScreen();
+  }
+
+  if(!home_screen && !end_screen){
+    background(bg);
+    game_level();
+    return_player();
+    change_levels();
+    show_scores();
+    makeAsteroids();
+    spawnAsteroids();
+  }
+}
+
+
 class SpaceShip{
   constructor(x,y){
     this.pos = createVector(x,y);
@@ -115,6 +213,7 @@ class Planet{
   collision(someShip){
     if(someShip.pos.x > this.x-this.radius+10 && someShip.pos.x < this.x+this.radius-10 &&
        someShip.pos.y > this.y - this.radius + 10 && someShip.pos.y < this.y+this.radius - 10){
+      planetCrash.play();
       crashed = true;
     }
   }
@@ -177,104 +276,11 @@ class Asteroid{
   made_contact(ship){
     if(ship.pos.x > this.pos.x-this.radius && ship.pos.x < this.pos.x+this.radius &&
       ship.pos.y > this.pos.y - this.radius && ship.pos.y < this.pos.y+this.radius){
+      explosion.play();
       crashed = true;
     }
   }
 
-}
-
-let crashed = false;
-let level = 1;
-let landed = "has not docked";
-let number_of_crashes = 0;
-const G_CONSTANT = 8*10**-2;
-const DRAG_CONSTANT = 0.35;
-let asteroidList = [];
-let lastswitch = 0;
-let interval = 5000;
-
-let planet_x_list;
-let planet_y_list;
-let planet_radius_list;
-
-let home_screen = true;
-let end_screen = false;
-
-
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  angleMode(DEGREES);
-
-  planet_x_list = [
-    [width/2],
-    [width/4 , 0.75*width],
-    [400, width-400, width/2],
-    [300, width-300, width/2, width/2],
-    [width/2, 300, 300, width-300, width-300]
-  ];
-  
-  planet_y_list = [
-    [height/2],
-    [height/2, height/2],
-    [300, 300, height-150],
-    [350, 350, height-150, height/2 -150],
-    [height/2, 200, 600, 200, 600]
-  ];
-  
-  planet_radius_list = [
-    [100],
-    [100, 100],
-    [100, 150, 100],
-    [100, 100, 100, 75],
-    [150, 75, 75, 75, 75]
-  ];
-
-  planet_image_list = [
-    [EarthImage],
-    [SaturnImage, MarsImage],
-    [EarthImage, MarsImage, SaturnImage],
-    [EarthImage, MarsImage, UranusImage, SaturnImage],
-    [UranusImage, MoonImage, MoonImage, MoonImage, MoonImage]
-
-  ];
-
-
-  player = new SpaceShip(width/2,150);
-
-  stellar = new Space_Station(0,0);
-  stellar_2 = new Space_Station(0,0);
-}
-
-function preload(){
-  EarthImage = loadImage("Earth.png");
-  MarsImage = loadImage("mars.png");
-  SaturnImage = loadImage("saturn.png");
-  MoonImage = loadImage("moon.png");
-  UranusImage = loadImage("uranus.png");
-  PlayerImage = loadImage("Player.png");
-  StationImage = loadImage("Station.png");
-  bg = loadImage("space.gif");
-}
-
-function draw() {
-  if(home_screen){
-    homeScreen();
-  }
-
-  if(end_screen){
-    endScreen();
-  }
-
-  if(!home_screen && !end_screen){
-    background(bg);
-    game_level();
-    return_player();
-    change_levels();
-    show_scores();
-    makeAsteroids();
-    spawnAsteroids();
-  }
 }
 
 function return_player(){
@@ -290,7 +296,7 @@ function return_player(){
 
 function makeAsteroids(){
   if(millis() > lastswitch + interval){
-    for (let i = 0; i < 10 ; i++){
+    for (let i = 0; i < 20 ; i++){
       let someparticle = new Asteroid();
       asteroidList.push(someparticle);
     }
@@ -328,13 +334,13 @@ function homeScreen(){
   textSize(100);
   textAlign(CENTER, TOP);
   textFont("Courier New");
-  text("Welcome to Space Odessy", width/2, 100);
+  text("Welcome to Space Oddessy", width/2, 100);
 
   fill("green");
   textSize(25);
   textAlign(CENTER, CENTER);
   textFont("Courier New");
-  text("Use the arrow keys to navigate your spaceship to a docking station", width/2, 300);
+  text("Use the arrow keys to change direction and WASD to accelerate your spaceship to a docking station", width/2, 300);
   text("Beware of Gravity. Don't get too close to the planets or the red asteroids", width/2, 400);
 
   fill("red");
@@ -370,19 +376,19 @@ function keyPressed(){
     home_screen = false;
   }
 
-  if(key === UP_ARROW){
+  if(key === "w"){
     player.vely.sub(0,1);
   }
 
-  if(key === DOWN_ARROW){
+  if(key === "s"){
     player.vely.add(0,1);
   }
 
-  if(key === LEFT_ARROW){
+  if(key === "a"){
     player.velx.sub(1,0);
   }
 
-  if(key === RIGHT_ARROW){
+  if(key === "d"){
     player.velx.add(1,0);
   }
 }
