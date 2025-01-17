@@ -5,29 +5,35 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
-let crashed = false;
-let level = 1;
-let landed = "has not docked";
-let number_of_crashes = 0;
+//constants
 const G_CONSTANT = 8*10**-2;
 const DRAG_CONSTANT = 0.35;
-let asteroidList = [];
+
+//numbered variables
+let number_of_crashes = 0;
+let level = 1;
 let lastswitch = 0;
 let interval = 5000;
 
+//lists
 let planet_x_list;
 let planet_y_list;
 let planet_radius_list;
+let asteroidList = [];
 
+//state variables
 let home_screen = true;
 let end_screen = false;
+let crashed = false;
+let landed = "has not docked";
 
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
+
+  //the lists contain x,y cordinates, images and radius magnitudes for each planet in every list
 
   planet_x_list = [
     [width/2],
@@ -62,14 +68,14 @@ function setup() {
 
   ];
 
-
+  //initializing player class and spacestation class
   player = new SpaceShip(width/2,150);
-
   stellar = new Space_Station(0,0);
   stellar_2 = new Space_Station(0,0);
 }
 
 function preload(){
+  //images 
   EarthImage = loadImage("Earth.png");
   MarsImage = loadImage("mars.png");
   SaturnImage = loadImage("saturn.png");
@@ -78,19 +84,24 @@ function preload(){
   PlayerImage = loadImage("Player.png");
   StationImage = loadImage("Station.png");
   bg = loadImage("space.gif");
+
+  //sounds
   explosion = loadSound("rock_breaking.flac");
   planetCrash = loadSound("big_explosion.ogg");
 }
 
 function draw() {
+  //display home screen
   if(home_screen){
     homeScreen();
   }
 
+  //display end screen
   if(end_screen){
     endScreen();
   }
 
+  //display other levels
   if(!home_screen && !end_screen){
     background(bg);
     game_level();
@@ -114,6 +125,7 @@ class SpaceShip{
   }
 
   display(){
+    //display the spaceship only when it has not crashed
     noStroke();
     if(!crashed){
       image(PlayerImage, this.pos.x, this.pos.y, this.width, this.length);
@@ -122,9 +134,11 @@ class SpaceShip{
 
 
   move(){
+    //change velocity 
     this.pos.add(this.velx);
     this.pos.add(this.vely);
 
+    //teleport to the beginning
     if(this.pos.x > width){
       this.pos.x = 0;
     }
@@ -143,6 +157,7 @@ class SpaceShip{
   }
 
   update_position(){
+    //change the directions
     if (keyCode === UP_ARROW){
       this.pos.sub(0,this.speed);
     }
@@ -162,6 +177,7 @@ class SpaceShip{
   }
 
   refresh(initial_x,initial_y){
+    //put the player back to spawn point
     this.pos.x = initial_x;
     this.pos.y = initial_y;
     this.velx = createVector(0,0);
@@ -181,10 +197,13 @@ class Planet{
   }
 
   display(){
+    //display the planet
     image(this.image, this.x-this.radius, this.y-this.radius, this.radius*2, this.radius*2);
   }
 
   applygravity(someShip, G){
+    //applies gravity to a moving projectile
+
     let gravity_acc = this.mass*G/dist(this.x, this.y, someShip.pos.x, someShip.pos.y)**2;
     let angle = atan(Math.abs(someShip.pos.y-this.y)/Math.abs(someShip.pos.x-this.x));
 
@@ -211,6 +230,7 @@ class Planet{
   }
 
   collision(someShip){
+    //Check if the planet is colliding and play collision sound if did
     if(someShip.pos.x > this.x-this.radius+10 && someShip.pos.x < this.x+this.radius-10 &&
        someShip.pos.y > this.y - this.radius + 10 && someShip.pos.y < this.y+this.radius - 10){
       planetCrash.play();
@@ -227,6 +247,7 @@ class Space_Station{
   }
 
   display(){
+    //display spaceship
     image(StationImage, this.pos.x, this.pos.y, this.size, this.size);
   }
 
