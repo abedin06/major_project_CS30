@@ -29,6 +29,7 @@ let landed = "has not docked";
 
 
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
@@ -87,7 +88,8 @@ function preload(){
 
   //sounds
   explosion = loadSound("rock_breaking.flac");
-  planetCrash = loadSound("big_explosion.ogg");
+  openingTheme = loadSound("Opening.mp3");
+  levelUp = loadSound("LevelUp.wav");
 }
 
 function draw() {
@@ -103,6 +105,9 @@ function draw() {
 
   //display other levels
   if(!home_screen && !end_screen){
+    if(!openingTheme.isPlaying()){
+      openingTheme.loop();
+    }
     background(bg);
     game_level();
     return_player();
@@ -202,7 +207,7 @@ class Planet{
   }
 
   applygravity(someShip, G){
-    //applies gravity to a moving projectile
+    //applies gravity to a moving projectile, towards the center of the planet
 
     let gravity_acc = this.mass*G/dist(this.x, this.y, someShip.pos.x, someShip.pos.y)**2;
     let angle = atan(Math.abs(someShip.pos.y-this.y)/Math.abs(someShip.pos.x-this.x));
@@ -247,13 +252,15 @@ class Space_Station{
   }
 
   display(){
-    //display spaceship
+    //display space station
     image(StationImage, this.pos.x, this.pos.y, this.size, this.size);
   }
 
   hasLanded(someShip){
+    //check if the spaceship has landed
     if(someShip.pos.x >= this.pos.x && someShip.pos.x <= this.pos.x + this.size &&
       someShip.pos.y >= this.pos.y && someShip.pos.y  <= this.pos.y + this.size){
+      levelUp.play();
       landed = "has docked";
     }
 
@@ -270,20 +277,24 @@ class Asteroid{
   }
 
   display(){
+    //display the asteroid
     fill("red");
     circle(this.pos.x, this.pos.y, this.radius*2);
   }
 
   move(){
+    //move the asteroid
     this.pos.add(this.velx);
     this.pos.add(this.vely);
   }
 
   isDead(){
+    //if the asteroid has gone out of the screen then remove it from the array
     if (this.y > windowHeight || this.x > windowWidth || this.x < windowWidth){
       return true;
     }
 
+    //check if asteroid is inside a planet
     for(let i = 0; i < planet_x_list[level-1].length; i++){
       if(this.pos.x > planet_x_list[level-1][i] - planet_radius_list[level-1][i] &&
          this.pos.x < planet_x_list[level-1][i] + planet_radius_list[level-1][i] &&
@@ -295,6 +306,7 @@ class Asteroid{
   }
 
   made_contact(ship){
+    //check if the asteroid has crashed into a ship
     if(ship.pos.x > this.pos.x-this.radius && ship.pos.x < this.pos.x+this.radius &&
       ship.pos.y > this.pos.y - this.radius && ship.pos.y < this.pos.y+this.radius){
       explosion.play();
@@ -304,6 +316,7 @@ class Asteroid{
 
 }
 
+//returns player to the start position
 function return_player(){
   if(crashed){
     if(frameCount%100 === 0){
@@ -315,6 +328,7 @@ function return_player(){
 }
 
 
+//makes a list of asteroids
 function makeAsteroids(){
   if(millis() > lastswitch + interval){
     for (let i = 0; i < 20 ; i++){
@@ -325,6 +339,7 @@ function makeAsteroids(){
   }
 }
 
+//uses the asteroid list to spawn asteroids
 function spawnAsteroids(){
   for (let rock of asteroidList){
     if(rock.isDead()){
@@ -340,6 +355,7 @@ function spawnAsteroids(){
   }
 }
 
+//show the number of deaths 
 function show_scores(){
   fill("white");
   textSize(20);
@@ -348,6 +364,7 @@ function show_scores(){
   text(landed, width-150, 200);
 }
 
+//shows the homescreen
 function homeScreen(){
   background("black");
 
@@ -372,6 +389,7 @@ function homeScreen(){
  
 }
 
+//shows the end screen
 function endScreen(){
   background("black");
 
@@ -393,10 +411,12 @@ function endScreen(){
 }
 
 function keyPressed(){
+  //swicth from homescreen when pressed f
   if(key === "f"){
     home_screen = false;
   }
 
+  //changes acceleration when pressed WASD
   if(key === "w"){
     player.vely.sub(0,1);
   }
@@ -416,15 +436,19 @@ function keyPressed(){
 
 
 function game_level(){
+  //different layouts for different levels
 
   if(level === 1){
     let planet_list = [];
 
+    //initializing the planets for this level
     for (let i = 0; i < planet_y_list[0].length; i++){
       let object = new Planet(planet_x_list[0][i], planet_y_list[0][i], planet_radius_list[0][i], planet_image_list[0][i]);
       planet_list.push(object);
     }
 
+
+    // for each planet in the locally created list make a custom planet with specific co-ordinates and radius
     for (let somePlanet of planet_list){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
@@ -435,6 +459,7 @@ function game_level(){
       }
     }
 
+    //makes the space station
     stellar.pos.x = width/2 + 400;
     stellar.pos.y = height/2;
     stellar.display();
@@ -447,24 +472,29 @@ function game_level(){
   }
 
   if(level === 2){
+    //creates a list to hold the planets for this leve;
     let planet_list = [];
 
+    //make a list of planets
     for (let i = 0; i < planet_y_list[1].length; i++){
       let object = new Planet(planet_x_list[1][i], planet_y_list[1][i], planet_radius_list[1][i], planet_image_list[1][i]);
       planet_list.push(object);
     }
 
+    //display the planets
     for (let somePlanet of planet_list){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
 
+      //apply gravity to the asteroids
       for (let asteroid of asteroidList){
         somePlanet.applygravity(asteroid, G_CONSTANT);
       }
     }
     
 
+    //make and display space stations
     stellar.pos.x = 0.75*width+200;
     stellar.pos.y = height/2;
   
@@ -478,13 +508,16 @@ function game_level(){
 
   if(level === 3){
 
+    //makes list of planets
     let planet_list = [];
 
+    //makes new planets
     for (let i = 0; i < planet_x_list[2].length; i++){
       let object = new Planet(planet_x_list[2][i], planet_y_list[2][i], planet_radius_list[2][i], planet_image_list[2][i]);
       planet_list.push(object);
     }
 
+    //displays custom planets from the list
     for (let somePlanet of planet_list){
       somePlanet.display();
       somePlanet.applygravity(player, G_CONSTANT);
@@ -495,6 +528,7 @@ function game_level(){
       }
     }
 
+    //makes 2 space stations
     stellar.pos.x = 250;
     stellar.pos.y = height-100;
 
@@ -516,23 +550,29 @@ function game_level(){
 
   if(level === 4){
 
+    //makes a list to hold planets
     let planet_list = [];
 
+    //makes new planets and pushes them to a list
     for (let i = 0; i < planet_x_list[3].length; i++){
       let object = new Planet(planet_x_list[3][i], planet_y_list[3][i], planet_radius_list[3][i], planet_image_list[3][i]);
       planet_list.push(object);
     }
 
+    //draws a custom planet from the planet list
     for (let somePlanet of planet_list){
       somePlanet.display();
+      //apply gravity to the player
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
 
       for (let asteroid of asteroidList){
+        //applygravity to the asteroids
         somePlanet.applygravity(asteroid, G_CONSTANT);
       }
     }
 
+    //makes space stations
     stellar.pos.x = 50;
     stellar.pos.y = height-100;
 
@@ -552,24 +592,30 @@ function game_level(){
   }
 
   if(level === 5){
-
+  
+    //makes a list to hold planets
     let planet_list = [];
 
+    //makes and pushes planets into a list
     for (let i = 0; i < planet_x_list[4].length; i++){
       let object = new Planet(planet_x_list[4][i], planet_y_list[4][i], planet_radius_list[4][i], planet_image_list[4][i]);
       planet_list.push(object);
     }
 
+    //draws planets from the custom list
     for (let somePlanet of planet_list){
       somePlanet.display();
+      //apply gravity to the player
       somePlanet.applygravity(player, G_CONSTANT);
       somePlanet.collision(player);
 
+      //apply gravity to the asteroids
       for (let asteroid of asteroidList){
         somePlanet.applygravity(asteroid, G_CONSTANT);
       }
     }
 
+    //draws space stations
     player.display();
     player.update_position();
     player.move();
@@ -588,6 +634,7 @@ function game_level(){
   }
 }
 
+//function that changes levels once you have landed your spaceship in the previous level
 function change_levels(){
   if (level === 1 && landed === "has docked"){
     level++;
@@ -613,6 +660,7 @@ function change_levels(){
     landed = "has not docked";
   }
 
+  //start the end screen after clearing level 5
   if(level === 5 && landed === "has docked"){
     end_screen = true;
   }
