@@ -233,7 +233,7 @@ class Planet{
     //Check if the planet is colliding and play collision sound if did
     if(someShip.pos.x > this.x-this.radius+10 && someShip.pos.x < this.x+this.radius-10 &&
        someShip.pos.y > this.y - this.radius + 10 && someShip.pos.y < this.y+this.radius - 10){
-      planetCrash.play();
+      explosion.play();
       crashed = true;
     }
   }
