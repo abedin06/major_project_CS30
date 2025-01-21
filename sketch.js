@@ -28,6 +28,22 @@ let crashed = false;
 let landed = "has not docked";
 
 
+function preload(){
+  //images 
+  EarthImage = loadImage("libraries/assets/Earth.png");
+  MarsImage = loadImage("libraries/assets/mars.png");
+  SaturnImage = loadImage("libraries/assets/saturn.png");
+  MoonImage = loadImage("libraries/assets/moon.png");
+  UranusImage = loadImage("libraries/assets/uranus.png");
+  PlayerImage = loadImage("libraries/assets/Player.png");
+  StationImage = loadImage("libraries/assets/Station.png");
+  bg = loadImage("libraries/assets/space.gif");
+
+  //sounds
+  explosion = loadSound("libraries/assets/rock_breaking.flac");
+  openingTheme = loadSound("libraries/assets/Opening.mp3");
+  levelUp = loadSound("libraries/assets/LevelUp.wav");
+}
 
 
 function setup() {
@@ -75,22 +91,6 @@ function setup() {
   stellar_2 = new Space_Station(0,0);
 }
 
-function preload(){
-  //images 
-  EarthImage = loadImage("Earth.png");
-  MarsImage = loadImage("mars.png");
-  SaturnImage = loadImage("saturn.png");
-  MoonImage = loadImage("moon.png");
-  UranusImage = loadImage("uranus.png");
-  PlayerImage = loadImage("Player.png");
-  StationImage = loadImage("Station.png");
-  bg = loadImage("space.gif");
-
-  //sounds
-  explosion = loadSound("rock_breaking.flac");
-  openingTheme = loadSound("Opening.mp3");
-  levelUp = loadSound("LevelUp.wav");
-}
 
 function draw() {
   //display home screen
@@ -638,30 +638,31 @@ function game_level(){
 function change_levels(){
   if (level === 1 && landed === "has docked"){
     level++;
-    player.refresh(width/2, 50);
+    levelUp.play();
     landed = "has not docked";
   }
 
   if(level === 2 && landed === "has docked"){
     level++;
-    player.refresh(width/2, 50);
+    levelUp.play();
     landed = "has not docked";
   }
 
   if(level === 3 && landed === "has docked"){
     level++;
-    player.refresh(width/2, 50);
+    levelUp.play();
     landed = "has not docked";
   }
 
   if(level === 4 && landed === "has docked"){
     level++;
-    player.refresh(width/2, 50);
+    levelUp.play();
     landed = "has not docked";
   }
 
   //start the end screen after clearing level 5
   if(level === 5 && landed === "has docked"){
+    levelUp.play();
     end_screen = true;
   }
 }
